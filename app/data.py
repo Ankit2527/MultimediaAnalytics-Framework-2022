@@ -28,6 +28,8 @@ all_rental_prices_text = ['Low rent (< 711 euro)', 'Middle high rent (711 - 971 
 all_surface_areas_text = ['Living space of 0-40 m2', 'Living space of 40-60 m2', 'Living space of 60-80 m2', 
 'Living space of 80-100 m2', 'Living space of > 100 m2']
 all_var_types = [all_surface_areas, all_rental_prices, all_property_types]
+all_kernels = ['WkUURTSLG_P', 'WkUURMIDDEN_P', 'WkUURHOOG_P', 'WkkURHOOG_P']
+all_kernels_text = ['Linear', 'Polynomial', 'Gaussian Radial Basis Function(RBF)', 'Sigmoid']
 
 label_def_ordered = []
 label_extra_ordered = []

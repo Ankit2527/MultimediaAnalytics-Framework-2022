@@ -38,6 +38,23 @@
 		{% endif %}
 	{% endfor %}
 </select>
+
+<select name="kernel">
+	{% for kernel in all_kernels %}
+		{% if kernel == selected_kernel %}
+			<option selected value="{{ kernel }}">{{all_kernels_text[loop.index - 1]}}</option> 
+		{% else %} 
+			<option value="{{ kernel }}">{{all_kernels_text[loop.index - 1]}}</option> 
+		{% endif %}
+	{% endfor %}
+</select>
+
+<!-- <select name="kernel" method="GET" action="/">
+    {% for kernel in kernels %}
+        <option value="{{kernel}}" SELECTED>{{kernel}}</option>"
+    {% endfor %}
+</select> -->
+
 <button class="btn btn-light" type="submit">Submit Query</button>
 </form>
 
@@ -59,12 +76,13 @@
 	var property_type = {{ selected_property_type | tojson }};
 	var surface_area = {{ selected_surface_area | tojson }};
 	var rental_price = {{ selected_rental_price | tojson }};
+	var kernel = {{ selected_kernel | tojson }};
 
 	var area;
 	var area_proba;
 
 	var fetch_url = '/data?property=' + property_type + '&surface=' + surface_area + 
-	'&price=' + rental_price + '&plot=1';
+	'&price=' + rental_price + '&plot=1'+ '&kernel=' + kernel;
 	fetch(fetch_url)
 		.then(function(response) { return response.json(); })
 		.then((data) => {

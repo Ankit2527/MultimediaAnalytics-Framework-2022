@@ -20,27 +20,44 @@ def bokeh():
 	property_type = request.args.get("property_type")
 	rental_price = request.args.get("rental_price")
 	surface_area = request.args.get("surface_area")
+	kernel = request.args.get("kernel")
+	# kernels = ['Sigmoid', 'Polynomial', 'Gaussian Radial Basis Function(RBF)', 'Linear']
 
 	if property_type is None:
 		property_type = 'WCORHUUR_P'
 		rental_price = 'WHUURTSLG_P'
 		surface_area = 'WOPP0040_P'
+		kernel = 'WkUURTSLG_P'
+		
 
 	return render_template("bokeh.html",
 		all_property_types=data.all_property_types, all_property_types_text=data.all_property_types_text,
 		all_rental_prices=data.all_rental_prices, all_rental_prices_text=data.all_rental_prices_text,
 		all_surface_areas=data.all_surface_areas, all_surface_areas_text=data.all_surface_areas_text,
-		selected_property_type=property_type, selected_rental_price=rental_price, selected_surface_area=surface_area)
+		selected_property_type=property_type, selected_rental_price=rental_price, selected_surface_area=surface_area,
+		all_kernels=data.all_kernels, all_kernels_text=data.all_kernels_text,
+		selected_kernel = kernel)
 
 
-@main.route("/data", methods=['GET'])
+@main.route("/data", methods=['GET', 'POST'])
 def get_data():
 	area = request.args.get("area")
 	
 	property_type = request.args.get("property")
 	rental_price = request.args.get("price")
 	surface_area = request.args.get("surface")
+	k = request.args.get("kernel")
+	print("Selected kernel is :",k)
 	plot = request.args.get("plot")
+
+	if k == 'WkUURTSLG_P':
+		ker = 'linear'
+	elif k == 'WkUURMIDDEN_P':
+		ker = 'poly'
+	elif k == 'WkUURHOOG_P':
+		ker = 'rbf'
+	elif k == 'WkkURHOOG_P':	
+		ker = 'sigmoid'
 
 	query_input = []
 	for idx, var in enumerate([surface_area, rental_price, property_type]):
@@ -53,7 +70,8 @@ def get_data():
 	query_input = np.array(query_input).reshape(1, -1)
 
 	#retrain model based on new data
-	trained_model = models.train_model(data.model_data, data.area_names, data.model_vars)
+	trained_model = models.train_model(data.model_data, data.area_names, data.model_vars, kernel = ker)
+	#trained_model = models.train_model(data.model_data, data.area_names, data.model_vars)
 
 	#have our trained model make a prediction based on our query input
 	_, probabilities = models.pred_proba(model=trained_model, input_vars=query_input)
@@ -81,7 +99,8 @@ def get_data():
 	if plot is not None:
 		plot_data = data.model_data.loc[data.model_data['area_name'] == plot_area]
 		plot_data = plot_data.loc[:, data.model_vars]
-		plot = plots.create_hbar(plot_area, plot_data)
+		#plot = plots.create_hbar(plot_area, plot_data)
+		plot = plots.create_plot(plot_area, plot_data)
 		return jsonify(prediction=pred_area, prediction_proba=proba, 
 				area_changed_proba=new_proba_prev_area, plotData=plot)
 	else:

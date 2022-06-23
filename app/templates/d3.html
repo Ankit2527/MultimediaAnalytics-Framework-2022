@@ -22,6 +22,43 @@
 	{% endfor %}
 </select>
 	<!-- <input type="submit"> -->
+
+<!-- <form action="/d3"> -->
+	<select id="area_name" name="area_name" onchange="updateArea(this); drawMap(mapData,this.value)">
+		{% for area_name in area_names %}
+		{% if area_name == selected_area_name %}
+		<option selected value="{{ area_name }}">{{ area_name }}</option> 
+		{% else %} 
+		<option value="{{ area_name }}">{{ area_name }}</option> 
+		{% endif %}
+		{% endfor %}
+	</select>
+		<!-- <input type="submit"> -->
+
+<!-- <form action="/d3"> -->
+	<select id="area_name" name="area_name" onchange="updateArea(this); drawMap(mapData,this.value)">
+		{% for area_name in area_names %}
+		{% if area_name == selected_area_name %}
+		<option selected value="{{ area_name }}">{{ area_name }}</option> 
+		{% else %} 
+		<option value="{{ area_name }}">{{ area_name }}</option> 
+		{% endif %}
+		{% endfor %}
+	</select>
+		<!-- <input type="submit"> -->
+
+	<!-- <form action="/d3"> -->
+<select id="area_name" name="area_name" onchange="updateArea(this); drawMap(mapData,this.value)">
+	{% for area_name in area_names %}
+	{% if area_name == selected_area_name %}
+	<option selected value="{{ area_name }}">{{ area_name }}</option> 
+	{% else %} 
+	<option value="{{ area_name }}">{{ area_name }}</option> 
+	{% endif %}
+	{% endfor %}
+</select>
+	<!-- <input type="submit"> -->
+
 <!-- </form> -->
 <div style = "display:flex;">
 <div  id="barchart">
